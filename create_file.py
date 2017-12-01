@@ -1,4 +1,6 @@
 
+import os
+
 
 def convert_file(f):
 
@@ -22,16 +24,16 @@ def convert_file(f):
 
 def main():
 
-    path = ['/Users/masaaki/Downloads/917/13_14563.html.csv',
-            '/Users/masaaki/Downloads/917/158_15132.html.csv',
-            '/Users/masaaki/Downloads/917/43751_27955.html.csv',
-            '/Users/masaaki/Downloads/917/65_14907.html.csv',
-            '/Users/masaaki/Downloads/917/3224_20895.html.csv',
-            '/Users/masaaki/Downloads/917/46922_33262.html.csv',
-            '/Users/masaaki/Downloads/917/2368_13456.html.csv',
-            '/Users/masaaki/Downloads/917/2326_13463.html.csv',
-            '/Users/masaaki/Downloads/917/2323_13460.html.csv',
-            '/Users/masaaki/Downloads/917/3784_27297.html.csv'
+    path = ['/Users/masaaki/info_test4_toma/keisokaiseki/917/bokuha.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jimokuki.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jixtuponnnohari.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jyujyunokotoba.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jyujyunokotoba2.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/kaigara.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/karuizawade.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/kujyaku.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/orokanaotokonohanashi.csv',
+            '/Users/masaaki/info_test4_toma/keisokaiseki/917/seiganhakutou.csv'
             ]
 
     for i in range(len(path)):
