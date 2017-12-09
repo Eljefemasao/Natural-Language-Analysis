@@ -8,7 +8,9 @@ import sys
 import os
 import glob
 
-DATA_DIR = './917/'
+SCRIPT_DATA_DIR = './917/'
+CHAR_DATA_DIR = './test_file/'
+INDEX_DATA_DIR = './classify_novel/917.txt'
 
 
 class LabeledListSentence(object):
@@ -21,48 +23,45 @@ class LabeledListSentence(object):
             yield models.doc2vec.LabeledSentence(words, ['%s' % self.labels[i]])
 
 
+def make_train_file(d):
+
+    result_text = []
+    result_index = []
+
+    file_path = glob.glob(os.path.join(d, '*.txt'))
+
+    for f_p in file_path:
+        pre_text = []
+        with open(f_p, 'r') as f:
+            for rows in f:
+                lines = rows.strip()
+                pre_text.append(lines)
+            result_text.append(pre_text)
+
+    with open(INDEX_DATA_DIR, 'r') as index:
+        for row in index:
+            line = row.strip()
+            result_index.append(line)
+
+    #print(str(result_index).decode("string-escape"))
+    #print(str(result_text).decode("string-escape"))
+    return result_text, result_index, file_path
+
+
 def main():
 
-        """
-        all_file = [bokuha_char, jimokuki_char, jixtuponnnohari_char, jyujyunokotoba_char, jyujyunokotoba2_char,
-                    kaigara_char, karuizawade_char, kujyaku_char, orokanaotokonohanashi_char, seiganhakutou_char]
-        """
-        files = glob.glob(os.path.join(DATA_DIR, '*.csv'))
-        pattern = r'\.\/917\/(.*)\.csv'
-        matches = re.finditer(pattern, files[0])
-        for match in matches:
-            print(match.groups()[0])
-
-        word_list = []
-        word_index = []
-        df_list = []
-        for file in files:
-            tmp_df = pd.read_csv(file, header=None, encoding="utf-8")
-            tmp_df['filename'] = '917/'+os.path.basename(file).split('.')[0]
-            df_list.append(tmp_df)
-        df = pd.concat(df_list, ignore_index=True)
-
-        word_list.append(df[0])
-        word_index.append(df['filename'])
-
-        sentences = LabeledListSentence(word_list[0], word_index[0])
-
+        r_t, r_i, file_path = make_train_file(CHAR_DATA_DIR)
+        sentences = LabeledListSentence(r_t, r_i)
         model = models.Doc2Vec(alpha=0.025, min_count=5,
                                size=100, iter=20, workers=4)
 
-        #model.build_vocab(sentences)
-
-        #model.train(sentences, total_examples=sum([len(wakati) for wakati in files]), epochs=model.iter)
-
-       # model.save('./data/doc2vec.model')
-
+        model.build_vocab(sentences)
+        model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
+        model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
-        word_index[0] = model.docvecs.offset2doctag
-
-        x = u'は'
+        x = '僕'
         print(model.most_similar(positive=[x]))
-        #print(str(result).decode("string-escape"))
 
 
 if __name__ == '__main__':
