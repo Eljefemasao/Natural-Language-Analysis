@@ -1,6 +1,10 @@
 
+import pandas as pd
+import glob
 import os
 
+DATA_DIR = './917/'
+DATA_DIR2 ='/Users/masaaki/env1/bin/info_test4_toma/keisokaiseki/917/'
 
 def convert_file(f):
 
@@ -10,7 +14,7 @@ def convert_file(f):
         i.strip('')
         row = i.split(',')
         result.append(row[0])
-    print(str(result).decode("string-escape"))
+
 
     name = f.split('/')
     rename = name[-1].split('.')
@@ -24,20 +28,11 @@ def convert_file(f):
 
 def main():
 
-    path = ['/Users/masaaki/info_test4_toma/keisokaiseki/917/bokuha.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jimokuki.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jixtuponnnohari.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jyujyunokotoba.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/jyujyunokotoba2.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/kaigara.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/karuizawade.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/kujyaku.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/orokanaotokonohanashi.csv',
-            '/Users/masaaki/info_test4_toma/keisokaiseki/917/seiganhakutou.csv'
-            ]
-
-    for i in range(len(path)):
-        convert_file(path[i])
+    
+    source_path  = glob.glob(os.path.join(DATA_DIR2,'*.csv'))
+    print(soruce_path)
+    for i in range(len(source_path)):
+        convert_file(source_path[i])
 
 
 if __name__ == '__main__':
