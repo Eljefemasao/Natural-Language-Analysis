@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import re
-import pandas as pd
 from gensim import models, corpora
 from tqdm import tqdm
 import sys
@@ -49,6 +48,41 @@ def make_train_file(d):
     return result_text, result_index, file_path, result_index
 
 
+def display_result(model, result_index):
+
+    print("\n")
+
+    # detect similar word with its degree of relatedness number.
+    char = '記憶'
+    print("<<Word analyzing about: %s>>" % char)
+    print("\n")
+    results = model.most_similar(positive=[char])
+    for result in results:
+        print(result[0])
+
+        with tqdm(total=100) as pbar:
+            for i in range(int(result[1] * 1000)):
+                pbar.update(0.1)
+
+    print("\n")
+
+    # detect similar document with its degree of relatedness number.
+    title = 5
+    print("<<Book's title analyzing about: title=%s>>" % result_index[title])
+    print("<<Index = %s>>" % result_index)
+
+    print("\n")
+    results1 = model.docvecs.most_similar(positive=[title])
+    for result1 in results1:
+        print(result1[0])
+
+        with tqdm(total=100) as pbar:
+            for i in range(int(result1[1] * 1000)):
+                pbar.update(0.1)
+
+    print("\n")
+
+
 def main():
 
         r_t, r_i, file_path, result_index = make_train_file(CHAR_DATA_DIR)
@@ -61,37 +95,7 @@ def main():
         model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
-        # detect similar word with its degree of relatedness number.
-        print("\n")
-
-        x = '神経'
-        print("<<Word analyzing about: %s>>" % x)
-        print("\n")
-        results = model.most_similar(positive=[x])
-        for result in results:
-            print(result[0])
-
-            with tqdm(total=100) as pbar:
-                for i in range(int(result[1]*1000)):
-                    pbar.update(0.1)
-
-        print("\n")
-
-        # detect similar document with its degree of relatedness number.
-        y = 9
-        print("<<Book's title analyzing about: Index[%d]>>" % y)
-        print("<<Index = %s>>" % result_index)
-
-        print("\n")
-        results1 = model.docvecs.most_similar(positive=[y])
-        for result1 in results1:
-            print(result1[0])
-
-            with tqdm(total=100) as pbar:
-                for i in range(int(result1[1]*1000)):
-                    pbar.update(0.1)
-
-        print("\n")
+        display_result(model, result_index)
 
 
 if __name__ == '__main__':
