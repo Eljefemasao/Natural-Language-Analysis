@@ -8,9 +8,9 @@ import sys
 import os
 import glob
 
-SCRIPT_DATA_DIR = './917/'
-CHAR_DATA_DIR = './test_file/'
-INDEX_DATA_DIR = './classify_novel/917.txt'
+SCRIPT_DATA_DIR = './917/'           # Original data which was already handled a monopheme analysis processing.
+CHAR_DATA_DIR = './test_file/'       # Single Words data which was extract from original data.
+INDEX_DATA_DIR = './classify_novel/917.txt'   # Original data's file name which mean title of book. Number is 10.
 
 
 class LabeledListSentence(object):
@@ -28,6 +28,7 @@ def make_train_file(d):
     result_text = []
     result_index = []
 
+    # get test_data_file's path and connect the all files.
     file_path = glob.glob(os.path.join(d, '*.txt'))
 
     for f_p in file_path:
@@ -43,8 +44,6 @@ def make_train_file(d):
             line = row.strip()
             result_index.append(line)
 
-    #print(str(result_index).decode("string-escape"))
-    #print(str(result_text).decode("string-escape"))
     return result_text, result_index, file_path
 
 
@@ -60,8 +59,15 @@ def main():
         model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
-        x = '僕'
+        # detect similar word with its degree of relatedness number.
+        print("\n")
+        x = '神経'
+        print("Analyze about %s" % x)
         print(model.most_similar(positive=[x]))
+        print("\n")
+        y = 9
+        print("Analyze about %d" % y)
+        print(model.docvecs.most_similar(positive=[y]))
 
 
 if __name__ == '__main__':
