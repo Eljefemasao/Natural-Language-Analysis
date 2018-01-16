@@ -1,10 +1,7 @@
 
 # -*- coding: utf-8 -*-
-
-import re
-from gensim import models, corpora
+from gensim import models
 from tqdm import tqdm
-import sys
 import os
 import glob
 
@@ -53,7 +50,7 @@ def display_result(model, result_index):
     print("\n")
 
     # detect similar word with its degree of relatedness number.
-    char = '記憶'
+    char = '僕'
     print("<<Word analyzing about: %s>>" % char)
     print("\n")
     results = model.most_similar(positive=[char])
@@ -67,7 +64,7 @@ def display_result(model, result_index):
     print("\n")
 
     # detect similar document with its degree of relatedness number.
-    title = 5
+    title = 6
     print("<<Book's title analyzing about: title=%s>>" % result_index[title])
     print("<<Index = %s>>" % result_index)
 
