@@ -2,6 +2,7 @@
 <body>
   <h1>Overview</h1>
   Our final purpose is to let application reads a document and detects a type of book using Word2Vec and Doc2Vec.
+  Depending on input, the output is display as the result like the image below. 
   <div>
 <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/graph1.png")
      </div>
@@ -13,7 +14,9 @@
     <li>create_file.py-extracs train data from directory test_file.</li>
     <li>make_index.py-extracs directory test_file from directory 917.</li>
   </ul>
+  
   Major dependiencies are:
+  
   <ul>
     <li>python3.6.3</li>
     <li>gensim</li>
