@@ -4,7 +4,7 @@
   Our final purpose is to let application reads a document and detects a type of book using Word2Vec and Doc2Vec.
 <p> Now analysis.py are written to be trained by ten soruce books which were done morpheme analysis and after that, calculates Input's degree of relatedness using doc2vec. At this stage Output will be ten similar words from source books when Input is a book's word. In the same way, Output will be ten source books title when Input is a book's title</p>
 
-  Depending on input, the output is display as the result like the image below. 
+  Depending on input, the output is displayed as the result like the image below. 
   <div>
 <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/graph1.png")
      </div>
