@@ -2,7 +2,7 @@
 <body>
   <h1>Overview</h1>
   Our final purpose is to let application reads a document and detects a type of book using Word2Vec and Doc2Vec.
-<p> Now analysis.py are written to be trained by ten soruce books which were done morpheme analysis and after that, calculates Input's degree of relatedness using doc2vec. At this stage Output will be ten similar words from source books when Input is a book's word. In the same way, Output will be ten source books title when Input is a book's title</p>
+<p> Now analysis.py are written to be trained by ten soruce books which were done morpheme analysis and after that, calculates Input's degree of relatedness using doc2vec. At this stage Output will be ten similar words from source books when Input is a book's word. In the same way, Output will be ten source books title when Input is a book's title.</p>
 
   Depending on input, the output is displayed as the result like the image below. 
   <div>
@@ -24,7 +24,9 @@
     <li>gensim</li>
     <li>tqdm</li>
   </ul>
-  
+  <h2>About Source Books</h2>
+  Source Books is here <a href="http://yozora.main.jp/9/ndc91.html">
+
   <h2>What is Word2Vec</h2>
   Word2Vec is a particularly computationally-efficient predictive model for learning word embeddings from raw text. This model converts target words as vector and it makes model calculates degree of relatedness each other.
 </body>
