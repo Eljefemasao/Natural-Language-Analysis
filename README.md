@@ -25,7 +25,7 @@
     <li>tqdm</li>
   </ul>
   <h2>About Source Books</h2>
-  Source Books is here <a href="http://yozora.main.jp/9/ndc91.html">
+  Source Books is here <a href="http://yozora.main.jp/9/ndc91.html">http://yozora.main.jp/9/ndc91.html</a>
 
   <h2>What is Word2Vec</h2>
   Word2Vec is a particularly computationally-efficient predictive model for learning word embeddings from raw text. This model converts target words as vector and it makes model calculates degree of relatedness each other.
