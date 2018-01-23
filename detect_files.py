@@ -1,11 +1,11 @@
 
+
 # -*- coding: utf-8 -*-
 
-import re
+import codecs
 from gensim import models, corpora
 from tqdm import tqdm
 import os
-import sys
 import glob
 
 CHAR_DATA_DIR = './source/'  # Text of Source Book
@@ -24,19 +24,18 @@ class LabeledListSentence(object):
 def make_train_file(directory):
 
     result_text = []
-    result_index = [910, 911, 912, 913, 914, 915, 916, 917, 919]  #今回918は省きます。
+    result_index = ['日本文学', '詩歌', '戯曲',  '小説','評論,エッセイ,随筆', '日記,書簡,紀行', '記録,手記,ルポタージュ','箴言','漢詩文,日本漢文学']  #今回918は省きます。
 
     # gets test_data_file's path and connects the all files.
     file_path = glob.glob(os.path.join(directory, '*.txt'))
 
     for f_p in file_path:
-        pre_text = []
-        with open(f_p, mode='r', encoding='ISO-8859-1') as f:
+
+        with codecs.open(f_p, 'r', 'utf-8') as f:
             for rows in f:
-                lines = rows.split(' ')
-                pre_text.append(lines)
-            result_text.append(pre_text)
-    print(result_text)
+                lines = rows.split()
+                result_text.append(lines)
+
     return result_text, result_index, file_path, result_index
 
 
