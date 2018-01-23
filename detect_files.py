@@ -8,7 +8,7 @@ import os
 import sys
 import glob
 
-CHAR_DATA_DIR = './source/'          #'./test_file/'     Single Words data which was extract from original data.
+CHAR_DATA_DIR = './source/'  # Text of Source Book
 
 
 class LabeledListSentence(object):
@@ -42,23 +42,9 @@ def make_train_file(directory):
 
 def display_result(model, result_index):
 
-    print("\n")
+    field = {910: '日本文学', 911: '詩歌', 912: '戯曲', 913: '小説', 914: '評論,エッセイ,随筆', 915: '日記,書簡,紀行', 916: '記録,手記,ルポタージュ', 917: '箴言', 919: '漢詩文,日本漢文学'}
 
-    # detect similar word with its degree of relatedness number.
-    char = '記憶'
-    print("<<Word analyzing about: %s>>" % char)
-    print("\n")
-    results = model.most_similar(positive=[char])
-    for result in results:
-        print(result[0])
-
-        with tqdm(total=100) as pbar:
-            for i in range(int(result[1] * 1000)):
-                pbar.update(0.1)
-
-    print("\n")
-
-    # detect similar document with its degree of relatedness number.
+    # 入力titleに紐ずけされたdocumentと似たdocumentの類似度を算出しパーセンテージの高いものから表示
     title = 5
     print("<<Book's title analyzing about: title=%s>>" % result_index[title])
     print("<<Index = %s>>" % result_index)
@@ -73,6 +59,9 @@ def display_result(model, result_index):
                 pbar.update(0.1)
 
     print("\n")
+
+    result_number = 915
+    print(field[result_number])
 
 
 def main():
@@ -93,4 +82,3 @@ def main():
 if __name__ == '__main__':
 
     main()
-    field = {910: '日本文学', 911: '詩歌', 912: '戯曲', 913: '小説', 914: '評論,エッセイ,随筆', 915: '日記,書簡,紀行', 916: '記録,手記,ルポタージュ', 917: '箴言', 919: '漢詩文,日本漢文学'}
