@@ -95,8 +95,8 @@ def main():
                                size=300, iter=600, workers=4, window=5)
 
         model.build_vocab(sentences)
-        #model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
-        #model.save('./data/doc2vec.model')
+        model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
+        model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
         display_result(model, result_index)
@@ -111,27 +111,26 @@ def main():
             doc_vecs.append(model.infer_vector(question))
 
         while True:
-            line = input(">> ")
+            print("\n")
+            print("Please fill in a sentence")
+            print("==============================================================================")
+            line = input("> ")
+            print("==============================================================================")
+            print("\n")
             if not line:
                 break
 
             vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
             sims = cosine_similarity([vec], doc_vecs)
             index = np.argsort(sims[0])
-
+            print(sims[0])
            # print(questions[index[-1]])
-            print()
-            print(answers[index[-1]])
-            print(sims)
-            print()
-            print(answers[index[-2]])
-            print()
-            print()
-            print(answers[index[-3]])
-            print()
-            print()
-            print(answers[index[-4]])
-            print()
+            print(index)
+            for i in range(1, 10):
+                print()
+                print(answers[index[-i]])
+                print(index[-i])
+                print()
 
 
 if __name__ == '__main__':
