@@ -53,10 +53,11 @@ def display_result(model, result_index):
     print("\n")
 
     # detect similar word with its degree of relatedness number.
-    char = '記憶'
+    char = '僕'
     print("<<Word analyzing about: %s>>" % char)
     print("\n")
     results = model.most_similar(positive=[char])
+
     for result in results:
         print(result[0])
 
@@ -88,11 +89,11 @@ def main():
         r_t, r_i, file_path, result_index = make_train_file(CHAR_DATA_DIR)
         sentences = LabeledListSentence(r_t, r_i)
         model = models.Doc2Vec(alpha=0.025, min_count=5,
-                               size=100, iter=20, workers=4)
+                               size=300, iter=600, workers=4)
 
         model.build_vocab(sentences)
-        model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
-        model.save('./data/doc2vec.model')
+        #model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
+        #model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
         display_result(model, result_index)
