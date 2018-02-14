@@ -32,7 +32,7 @@ Usage:
   <div>
     <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/input.png">
   </div>
-  Depending on input, the output will be displayed as the result like the image below.
+  <p>Depending on input, the output will be displayed as the result like the image below.</p>
   <div>
     <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/result1.png">
   </div>
