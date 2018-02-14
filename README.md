@@ -1,7 +1,7 @@
 <html>
 <body>
   <h1>Overview</h1>
-<p>Our final project's purpose is to let application reads a document and detects a type of book using Doc2Vec.I tackled Stage1 for getting used to the consept of Doc2Vec and Stage2 for main porject.
+<p>Our final project's purpose is to let application reads a document and detects a type of book using Doc2Vec. I tackled Stage1 for getting used to the consept of Doc2Vec and Stage2 for main porject.
 </p>
   
 <div>
@@ -31,7 +31,7 @@ Usage:
 
   Depending on input, the output will be displayed as the result like the image below.
   <div>
-    <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/">
+    <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/graph2.png">
   </div>
 </div>
 
