@@ -2,18 +2,17 @@
 
 # -*- coding: utf-8 -*-
 
+from tqdm import tqdm
 import codecs
 from gensim import models
 import gensim
-from tqdm import tqdm
 import os
 import glob
-
 import MeCab
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-CHAR_DATA_DIR = './source/'  # Text of Source Book
+CHAR_DATA_DIR = './source/'  # Text of Source Book.
 
 
 class LabeledListSentence(object):
@@ -28,10 +27,27 @@ class LabeledListSentence(object):
 
 def make_train_file(directory):
 
-    result_text = []
-    result_index = ['日本文学', '詩歌', '戯曲',  '小説', '評論,エッセイ,随筆', '日記,書簡,紀行', '記録,手記,ルポタージュ', '箴言', '漢詩文,日本漢文学']  #今回918は省きます。
+    """
+    Add source book's document to list respectively.
 
-    # gets test_data_file's path and connects the all files.
+    :param directory: Directory that Source Book's document which were done morpheme analysis.
+    :return:
+
+    result_text : Each documents will be arranged in list. [[910_日本文学],[911_詩歌],[912_戯曲],
+    [913_小説],[914_評論/エッセイ/随筆],[915_日記/書簡/紀行],[916_記録/手配/流ポタージュ],[917_箴言],[919_漢詩文/日本漢文学]].
+
+    result_index: List of Source Book's field.
+
+    file_path: List which have Source Book's path (string). Like below.
+    ['./source/919.txt','./source/914.txt','./source/915.txt','./source/917.txt','./source/916.txt','./source/912.txt','./source/913.txt','./source/911.txt','./source/910.txt']
+
+    """
+
+    result_text = []
+    # This time, Omit 918.
+    result_index = ['漢詩文,日本漢文学', '評論,エッセイ,随筆', '日記,書簡,紀行', '箴言', '記録,手記,ルポタージュ', '戯曲', '小説', '詩歌', '日本文学']
+
+    # Get test_data_file's path and connects the all files.
     file_path = glob.glob(os.path.join(directory, '*.txt'))
 
     for f_p in file_path:
@@ -44,46 +60,49 @@ def make_train_file(directory):
     return result_text, result_index, file_path
 
 
-def display_result(model, result_index):
+def display_result(model, result_text, result_index):
 
-    # 入力titleに紐ずけされたdocumentと似たdocumentの類似度を算出しパーセンテージの高いものから表示
+    """
+    :param model: Trained Doc2Vec model which is instance.
+    :param result_text: List which is Source Book's document.
+    :param result_index: List which is Source Book's field.
+    :return:
+    Degree of relatedness.
+    """
 
-    print("\n")
+    mecab = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd -Owakati")
 
-    # detect similar word with its degree of relatedness number.
-    char = '僕'
-    print("<<Word analyzing about: %s>>" % char)
-    print("\n")
-    results = model.most_similar(positive=[char])
-    print(results)
-    for result in results:
-        print(result[0])
+    sentences = result_text
+    answers = result_index
 
-        with tqdm(total=100) as pbar:
-            for i in range(int(result[1] * 1000)):
-                pbar.update(0.1)
+    # Infer a vector for given post-bulk training document.
+    doc_vecs = []
+    for sentence in sentences:
+        doc_vecs.append(model.infer_vector(sentence))
 
-    print("\n")
-
-    print("\n")
-
-    title = 4
-    print("<<Book's title analyzing about: title=%s>>" % result_index[title])
-
-    print("<<Index = %s>>" % result_index)
-    results1 = model.docvecs.most_similar(positive=[title])#(positive=[title])
-    print(results1)
-    for result1 in results1:
-        print(result1[0])
-
-        with tqdm(total=100) as pbar:
-            for i in range(int(result1[1] * 1000)):
-                pbar.update(0.1)
-
-    print("\n")
-
-    final_tuple = results1[0]
-    print(final_tuple[0])
+    while True:
+        print("\n")
+        print("Please fill in a sentence")
+        print("==============================================================================")
+        line = input("> ")
+        print("==============================================================================")
+        print("\n")
+        if not line:
+            break
+        # Convert a Input of sentence into a list of tokens.
+        vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
+        # Calculate each document's cosine similarity.
+        sims = cosine_similarity([vec], doc_vecs)
+        # Re-sort cosine_similarity of each field in ascending order.
+        index1 = np.sort(sims[0])
+        index = np.argsort(sims[0])
+        print(index1)
+        print("")
+        for i in range(1, 10):
+            print(answers[index[-i]])
+            with tqdm(total=100) as pbar:
+                for i in range(int(index1[-i] * 1000)):
+                    pbar.update(0.1)
 
 
 def main():
@@ -91,7 +110,7 @@ def main():
         result_text, result_index, file_path = make_train_file(CHAR_DATA_DIR)
         sentences = LabeledListSentence(result_text, result_index)
 
-        model = models.Doc2Vec(alpha=0.001, min_count=5, dm=1,
+        model = models.Doc2Vec(alpha=0.025, min_count=5, dm=1,
                                size=300, iter=600, workers=4, window=5)
 
         model.build_vocab(sentences)
@@ -99,38 +118,7 @@ def main():
         model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
-        display_result(model, result_index)
-
-        mecab = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd -Owakati")
-
-        questions = result_text
-        answers = result_index
-
-        doc_vecs = []
-        for question in questions:
-            doc_vecs.append(model.infer_vector(question))
-
-        while True:
-            print("\n")
-            print("Please fill in a sentence")
-            print("==============================================================================")
-            line = input("> ")
-            print("==============================================================================")
-            print("\n")
-            if not line:
-                break
-
-            vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
-            sims = cosine_similarity([vec], doc_vecs)
-            index = np.argsort(sims[0])
-            print(sims[0])
-           # print(questions[index[-1]])
-            print(index)
-            for i in range(1, 10):
-                print()
-                print(answers[index[-i]])
-                print(index[-i])
-                print()
+        display_result(model, result_text, result_index)
 
 
 if __name__ == '__main__':
