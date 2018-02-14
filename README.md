@@ -30,8 +30,7 @@ Usage:
   ```
   For instance, I'm going to input some sentence from one of document '日本文学'.
   <div>
-  <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/im\
-		     age/input.png">
+    <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/input.png">
   </div>
   Depending on input, the output will be displayed as the result like the image below.
   <div>
