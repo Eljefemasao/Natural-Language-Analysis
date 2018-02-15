@@ -35,7 +35,7 @@ Usage:
   ```sh
   $ python3 detect_files.py
   ```
-  For instance, I'm going to input some sentence from one of document '日本文学'.
+  For instance, I'm going to input some sentence from one of '日本文学' document.
   <div>
     <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/input.png">
   </div>
