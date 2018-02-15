@@ -114,8 +114,8 @@ def main():
                                size=300, iter=600, workers=4, window=5)
 
         model.build_vocab(sentences)
-        #model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
-        #model.save('./data/doc2vec.model')
+        model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
+        model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
         display_result(model, result_text, result_index)
