@@ -1,10 +1,9 @@
 
 # -*- coding: utf-8 -*-
 
-import re
-from gensim import models, corpora
+
+from gensim import models
 from tqdm import tqdm
-import sys
 import os
 import glob
 
@@ -24,13 +23,13 @@ class LabeledListSentence(object):
             yield models.doc2vec.LabeledSentence(words, ['%s' % self.labels[i]])
 
 
-def make_train_file(d):
+def make_train_file(directory):
 
     result_text = []
     result_index = []
 
     # get test_data_file's path and connect the all files.
-    file_path = glob.glob(os.path.join(d, '*.txt'))
+    file_path = glob.glob(os.path.join(directory, '*.txt'))
 
     for f_p in file_path:
         pre_text = []
@@ -45,7 +44,7 @@ def make_train_file(d):
             line = row.strip()
             result_index.append(line)
 
-    return result_text, result_index, file_path, result_index
+    return result_text, result_index, file_path
 
 
 def display_result(model, result_index):
@@ -53,7 +52,7 @@ def display_result(model, result_index):
     print("\n")
 
     # detect similar word with its degree of relatedness number.
-    char = '僕'
+    char = '人間'
     print("<<Word analyzing about: %s>>" % char)
     print("\n")
     results = model.most_similar(positive=[char])
@@ -86,10 +85,10 @@ def display_result(model, result_index):
 
 def main():
 
-        r_t, r_i, file_path, result_index = make_train_file(CHAR_DATA_DIR)
-        sentences = LabeledListSentence(r_t, r_i)
+        result_text, result_index, file_path = make_train_file(CHAR_DATA_DIR)
+        sentences = LabeledListSentence(result_text, result_index)
         model = models.Doc2Vec(alpha=0.025, min_count=5,
-                               size=100, iter=20, workers=4)
+                               size=100, iter=200, workers=4)
 
         model.build_vocab(sentences)
         model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
