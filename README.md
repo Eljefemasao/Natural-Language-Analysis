@@ -7,13 +7,13 @@
 
 <div>
   <h1>Overview</h1>
-<p>Our final project's purpose is to let application reads a document and detects a type of book using Doc2Vec. I tackled Stage1 for getting used to the consept of Doc2Vec and Stage2 for main porject.
+<p>Our final project's purpose is to let application reads a document and detects a type of book using Doc2Vec. I tackled Stage1 for getting used to the concept of Doc2Vec and Stage2 for main project.
 </p>
 </div>  
 
 <div>
 Stage 1:
-<p> Now analysis.py are written to be trained by ten soruce books which were done morpheme analysis. And after that, It calculates Input's degree of relatedness using Doc2Vec. At this stage Output will be ten similar words from source books when Input is a book's word. In the same way, Output will be ten source books title when Input is a book's title.</p>
+<p> Now analysis.py are written to be trained by ten source books which were done morpheme analysis. And after that, It calculates Input's degree of relatedness using Doc2Vec. At this stage Output will be ten similar words from source books when Input is a book's word. In the same way, Output will be ten source books title when Input is a book's title.</p>
 
 Usage is very easy:
 
@@ -61,7 +61,7 @@ Usage:
     <li>detect_files.py- have TOPIC_ANALYZE function. This is main project.</li>
   </ul>
 
-  Major dependiencies are:
+  Major dependencies are:
 
   <ul>
     <li>python3.6.3</li>
@@ -84,6 +84,6 @@ Usage:
   Source Books are here <a href="http://yozora.main.jp/9/ndc91.html">http://yozora.main.jp/9/ndc91.html</a>
 
   <h2>License</h2>
-  This project is released under the <a href="">MIT License</a>.For more information,see the LICENSE file.
+  This project is released under the <a href="https://github.com/Eljefemasao/Natural-Language-Processing/blob/master/LICENSE">MIT License</a>. For more information, see the LICENSE file.
 </body>
 </html>
