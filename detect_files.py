@@ -11,11 +11,15 @@ import glob
 import MeCab
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import preprocessing
 
-CHAR_DATA_DIR = './source/'  # Text of Source Book.
+CHAR_DATA_DIR = './source/'  # Document of Source Book.
 
 
 class LabeledListSentence(object):
+    """
+    Tag each document.
+    """
     def __init__(self, words_list, labels):
         self.words_list = words_list
         self.labels = labels
@@ -50,11 +54,14 @@ def make_train_file(directory):
     # Get test_data_file's path and connects the all files.
     file_path = glob.glob(os.path.join(directory, '*.txt'))
 
+    # Open each document files and insert into list separately.
+    # Finally inset these list into result_text.
     for f_p in file_path:
 
         with codecs.open(f_p, 'r', 'utf-8') as f:
             for rows in f:
-                lines = rows.split()
+                result = preprocessing.normalize(rows)
+                lines = result.split()
                 result_text.append(lines)
 
     return result_text, result_index, file_path
@@ -70,6 +77,7 @@ def display_result(model, result_text, result_index):
     Degree of relatedness.
     """
 
+    # Create instance of class "MeCab.Tagger" with system dictionary "mecab-ipadic-neologd".
     mecab = MeCab.Tagger("-d /usr/local/lib/mecab/dic/mecab-ipadic-neologd -Owakati")
 
     sentences = result_text
@@ -89,7 +97,8 @@ def display_result(model, result_text, result_index):
         print("\n")
         if not line:
             break
-        # Convert a Input of sentence into a list of tokens.
+        # Convert a Input of sentence into a list of tokens.　
+        # After that, turn it for vector processing.
         vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
         # Calculate each document's cosine similarity.
         sims = cosine_similarity([vec], doc_vecs)
@@ -97,6 +106,7 @@ def display_result(model, result_text, result_index):
         index1 = np.sort(sims[0])
         index = np.argsort(sims[0])
         print(index1)
+        # Show each cosine_similarity as bar chart.
         print("")
         for i in range(1, 10):
             print(answers[index[-i]])
@@ -108,12 +118,14 @@ def display_result(model, result_text, result_index):
 def main():
 
         result_text, result_index, file_path = make_train_file(CHAR_DATA_DIR)
+        # Labeling each documents.
         sentences = LabeledListSentence(result_text, result_index)
-
+        # Create model using ‘distributed memory’ (PV-DM)
         model = models.Doc2Vec(alpha=0.025, min_count=5, dm=1,
                                size=300, iter=600, workers=4, window=5)
-
+        # Build vocabulary from a sequence of sentences.
         model.build_vocab(sentences)
+        # Train model
         model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
         model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
