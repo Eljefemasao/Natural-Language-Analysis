@@ -42,7 +42,7 @@ def make_train_file(directory):
 
     result_index: List of Source Book's field.
 
-    file_path: List which have Source Book's path (string). Like below.
+    file_paths: List which have Source Book's path (string). Like below.
     ['./source/919.txt','./source/914.txt','./source/915.txt','./source/917.txt','./source/916.txt','./source/912.txt','./source/913.txt','./source/911.txt','./source/910.txt']
 
     """
@@ -52,19 +52,19 @@ def make_train_file(directory):
     result_index = ['漢詩文,日本漢文学', '評論,エッセイ,随筆', '日記,書簡,紀行', '箴言', '記録,手記,ルポタージュ', '戯曲', '小説', '詩歌', '日本文学']
 
     # Get test_data_file's path and connects the all files.
-    file_path = glob.glob(os.path.join(directory, '*.txt'))
+    file_paths = glob.glob(os.path.join(directory, '*.txt'))
 
     # Open each document files and insert into list separately.
     # Finally inset these list into result_text.
-    for f_p in file_path:
+    for file_path in file_paths:
 
-        with codecs.open(f_p, 'r', 'utf-8') as f:
-            for rows in f:
-                result = preprocessing.normalize(rows)
-                lines = result.split()
-                result_text.append(lines)
+        with codecs.open(file_path, 'r', 'utf-8') as file:
+            for text_line in file:
+                result = preprocessing.normalize(text_line)
+                text_list = result.split()
+                result_text.append(text_list)
 
-    return result_text, result_index, file_path
+    return result_text, result_index, file_paths
 
 
 def display_result(model, result_text, result_index):
@@ -101,17 +101,18 @@ def display_result(model, result_text, result_index):
         # After that, turn it for vector processing.
         vec = model.infer_vector(gensim.utils.simple_preprocess(mecab.parse(line), min_len=1))
         # Calculate each document's cosine similarity.
-        sims = cosine_similarity([vec], doc_vecs)
+        sims_list = cosine_similarity([vec], doc_vecs)
         # Re-sort cosine_similarity of each field in ascending order.
-        index1 = np.sort(sims[0])
-        index = np.argsort(sims[0])
-        print(index1)
+        sorted_sims_list = np.sort(sims_list[0])
+        argsorted_sims_list = np.argsort(sims_list[0])
+        print(sorted_sims_list)
+
         # Show each cosine_similarity as bar chart.
         print("")
         for i in range(1, 10):
-            print(answers[index[-i]])
+            print(answers[argsorted_sims_list[-i]])
             with tqdm(total=100) as pbar:
-                for i in range(int(index1[-i] * 1000)):
+                for i in range(int(sorted_sims_list[-i] * 1000)):
                     pbar.update(0.1)
 
 
@@ -129,7 +130,6 @@ def main():
         model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
         model.save('./data/doc2vec.model')
         model = models.Doc2Vec.load('./data/doc2vec.model')
-
         display_result(model, result_text, result_index)
 
 
