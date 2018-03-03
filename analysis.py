@@ -6,9 +6,11 @@ from gensim import models
 from tqdm import tqdm
 import os
 import glob
+from sklearn.manifold import TSNE
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
-SCRIPT_DATA_DIR = './917/'           # Original data which was already handled a monopheme analysis processing.
 CHAR_DATA_DIR = './test_file/'       # Single Words data which was extract from original data.
 INDEX_DATA_DIR = './classify_novel/917.txt'   # Original data's file name which mean title of book. Number is 10.
 
@@ -52,7 +54,7 @@ def display_result(model, result_index):
     print("\n")
 
     # detect similar word with its degree of relatedness number.
-    char = '人間'
+    char = '僕'
     print("<<Word analyzing about: %s>>" % char)
     print("\n")
     results = model.most_similar(positive=[char])
@@ -83,12 +85,34 @@ def display_result(model, result_index):
     print("\n")
 
 
+def plot_degree_of_relatedness(model):
+
+    # It gets a standalone vocab list for the final dataframe to plot.
+    # And for knowing the order of the words.
+    vocab = list(model.wv.vocab)
+    X = model[vocab]
+    print(len(X))
+    print(X[0])
+    tsne = TSNE(n_components=2)
+    X_tsne = tsne.fit_transform(X)
+
+    df = pd.DataFrame(X_tsne, index=vocab, columns=['x', 'y'])
+    print(df)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.scatter(df['x'], df['y'])
+    for word, pos in df.iterrows():
+        ax.annotate(word, pos)
+
+    plt.show()
+
+
 def main():
 
         result_text, result_index, file_path = make_train_file(CHAR_DATA_DIR)
         sentences = LabeledListSentence(result_text, result_index)
         model = models.Doc2Vec(alpha=0.025, min_count=5,
-                               size=100, iter=200, workers=4)
+                               size=100, iter=20, workers=4)
 
         model.build_vocab(sentences)
         model.train(sentences, total_examples=sum([len(w) for w in file_path]), epochs=model.iter)
@@ -96,6 +120,8 @@ def main():
         model = models.Doc2Vec.load('./data/doc2vec.model')
 
         display_result(model, result_index)
+
+        plot_degree_of_relatedness(model)
 
 
 if __name__ == '__main__':
