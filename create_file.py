@@ -1,10 +1,10 @@
 
-import pandas as pd
+
 import glob
 import os
 
 DATA_DIR = './917/'
-DATA_DIR2 ='/Users/masaaki/env1/bin/info_test4_toma/keisokaiseki/917/'
+
 
 def convert_file(f):
 
@@ -14,7 +14,6 @@ def convert_file(f):
         i.strip('')
         row = i.split(',')
         result.append(row[0])
-
 
     name = f.split('/')
     rename = name[-1].split('.')
@@ -28,9 +27,8 @@ def convert_file(f):
 
 def main():
 
-    
-    source_path  = glob.glob(os.path.join(DATA_DIR2,'*.csv'))
-    print(soruce_path)
+    source_path = glob.glob(os.path.join(DATA_DIR, '*.csv'))
+    print(source_path)
     for i in range(len(source_path)):
         convert_file(source_path[i])
 
