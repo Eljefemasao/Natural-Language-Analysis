@@ -39,6 +39,9 @@ Usage:
   <div>
     <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/input.png">
   </div>
+  <div>
+    <img alt="er" src="https://github.com/Eljefemasao/Natural-Language-Analysis/blob/image/image/graph_dot.png">
+  </div>
 <div>
   <p>Depending on input, the output will be displayed as the result like the image below.</p>
 </div>
@@ -69,6 +72,8 @@ Usage:
     <li>MeCab-0.996</li>
     <li>mecab-ipadic-neologd</li>
     <li>scikit-learn</li>
+    <li>pandas</li>
+    <li>numpy</li>
   </ul>
 
   <h2>Directories</h2>
