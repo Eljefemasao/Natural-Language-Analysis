@@ -66,13 +66,14 @@ Usage:
   Major dependencies are:
 
   <ul>
-    <li>python3.6.3</li>
-    <li>gensim</li>
+    <li>python:3.6.3</li>
+    <li>gensim:3.2.0</li>
     <li>MeCab-0.996</li>
     <li>mecab-ipadic-neologd</li>
-    <li>scikit-learn</li>
-    <li>pandas</li>
-    <li>numpy</li>
+    <li>scikit-learn:0.19.1</li>
+    <li>pandas:0.20.3</li>
+    <li>numpy:1.14.0</li>
+    <li>tqdm:4.19.4</li>
   </ul>
 
   <h2>Directories</h2>
